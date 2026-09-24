@@ -1,8 +1,5 @@
 # Parkir Borobudur
 
-Dokumentasi ini dibuat berdasarkan audit read-only terhadap source code project pada **24 September 2026**.
-
-> **Catatan database:** backup SQL tersedia di `backups/`, tetapi beberapa query PHP terbaru memakai kolom/status yang belum ada pada backup lama. Perbedaan ini dijelaskan di bagian Database dan Instalasi.
 
 ## 1. Deskripsi Project
 
