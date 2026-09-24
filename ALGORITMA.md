@@ -1,6 +1,6 @@
 # Dokumentasi Algoritma Sistem Parkir Borobudur
 
-Dokumen ini dibuat berdasarkan pembacaan **READ-ONLY** terhadap source code project pada **24 September 2026**. Isinya hanya menjelaskan proses yang benar-benar ditemukan pada kode PHP. Tidak ada source code, database, konfigurasi, UI, atau struktur project yang diubah.
+
 
 ## Catatan Cara Membaca
 
