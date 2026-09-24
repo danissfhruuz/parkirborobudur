@@ -1036,30 +1036,3 @@ Berdasarkan audit teknis secara **READ-ONLY**, berikut adalah 25 file penting in
 | 24 | `index admin/manajemen-user.php` | Manajemen Akun Admin | Monitoring daftar user dan perlindungan integritas data (blokir hapus user aktif). |
 | 25 | `index owner/dashboard-owner.php` | Eksekutif Owner | Agregasi statistik harian, okupansi zona, dan estimasi omzet dari booking `Selesai`. |
 
-## Catatan Verifikasi
-
-Bagian ini merangkum poin-poin hasil audit teknis mendalam terhadap source code yang memerlukan perhatian atau verifikasi lanjutan sebelum sistem diuji atau di-deploy:
-
-1. **Perbedaan Skema Database Terbaru vs File Backup SQL:**
-   - **Status:** `PERLU VERIFIKASI`
-   - **Keterangan:** File cadangan database lama tidak memuat beberapa kolom penting yang aktif dipakai pada source code PHP terbaru, antara lain: `booking.kode_booking`, `booking.sumber`, `booking.tanggal_parkir`, `booking.checkin_staff_id`, `booking.qr_shown`, status `'Menunggu Check-in'`, serta tabel `ulasan`. Pastikan database yang berjalan di server lokal/hosting sudah menggunakan skema termutakhir.
-
-2. **Sinkronisasi Okupansi Area (Trigger vs Logika PHP):**
-   - **Status:** `PERLU VERIFIKASI`
-   - **Keterangan:** Pada backup SQL lama terdapat trigger database yang otomatis mengubah counter `area_parkir.terisi`, sementara pada source code PHP terbaru pembaruan dilakukan secara eksplisit memanggil fungsi `syncTerisiArea()` di `booking-occupancy.php`. Harus diverifikasi agar trigger lama dinonaktifkan supaya nilai `terisi` tidak terhitung berkurang atau bertambah dua kali lipat (double count).
-
-3. **Status Booking & Jam Keluar pada Checkout:**
-   - **Status:** Terverifikasi Sesuai Source Code
-   - **Keterangan:** Pada `index petugas/checkout.php`, status transaksi diubah menjadi `Selesai` dan `jam_keluar = CURTIME()` dicatat lebih dulu ke dalam database dalam satu transaksi aman (`FOR UPDATE`). Perhitungan selisih durasi serta denda dihitung setelahnya saat halaman `struck.php` dibuka menggunakan helper `parkir-fee.php`.
-
-4. **Metode Pembayaran Online / Gateway:**
-   - **Status:** Tidak ditemukan implementasi yang dapat diverifikasi di source code
-   - **Keterangan:** Sistem tidak memiliki modul payment gateway (seperti Midtrans, Xendit, atau transfer bank otomatis). Tagihan yang dihitung sistem adalah tarif resmi parkir Borobudur untuk keperluan pelaporan kasir/petugas dan cetak struk fisik.
-
-5. **Fungsi QR Scanner Tiket:**
-   - **Status:** Terverifikasi Sesuai Source Code
-   - **Keterangan:** QR Code yang dihasilkan pada aplikasi user (`antrian-parkir.php`) berfungsi sebagai tiket digital yang memuat teks gabungan data booking. Pada sisi petugas (`checkin.php`), scanner kamera HTML5/JavaScript mengekstrak `kode_booking`, tetapi validasi keaslian, ketersediaan area, kuota slot, dan status kendaraan tetap divalidasi penuh oleh server di backend PHP.
-
-6. **File Struk Legacy:**
-   - **Status:** `PERLU VERIFIKASI`
-   - **Keterangan:** Terdapat file `struck.php` di direktori root aplikasi yang menggunakan logika dan formula lama. Halaman operasional aktif yang benar-benar digunakan sistem saat ini berada di `index petugas/struck.php` dan `index login user/struck.php`.
