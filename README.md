@@ -15,7 +15,7 @@ Parkir Borobudur adalah aplikasi web untuk membantu pengelolaan parkir wisata. S
 - API QR eksternal `api.qrserver.com` untuk QR pada struk.
 - Apache `.htaccess` untuk aturan akses file.
 
-Tidak ditemukan `composer.json`, `package.json`, atau framework PHP. Versi minimum PHP belum ditentukan di source.
+
 
 ## 3. Role dan Hak Akses
 
